@@ -1,15 +1,17 @@
+import os
 import re
 import asyncio
 from functools import lru_cache
 from langchain_openai import ChatOpenAI
 
 
-# ── Model factory (cached so we don't recreate on every call) ──────────────────
+# ── Model factory (Groq, OpenAI-compatible API) ───────────────────────────────
 @lru_cache(maxsize=1)
 def _get_llm() -> ChatOpenAI:
-    # Reads OPENAI_API_KEY from the environment (.env)
     return ChatOpenAI(
-        model="gpt-4o-mini",
+        model=os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile"),
+        openai_api_key=os.getenv("GROQ_API_KEY", ""),
+        openai_api_base="https://api.groq.com/openai/v1",
         temperature=0.5,
         max_tokens=1500,
         timeout=120,
