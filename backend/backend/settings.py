@@ -1,11 +1,15 @@
 import os
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-key-for-development-only'
-DEBUG = True
-ALLOWED_HOSTS = ['*']
+load_dotenv(BASE_DIR / '.env')
+
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-key-for-development-only')
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
+ALLOWED_HOSTS = [h.strip() for h in os.getenv('ALLOWED_HOSTS', '*').split(',') if h.strip()]
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',') if o.strip()]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -72,7 +76,8 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS
