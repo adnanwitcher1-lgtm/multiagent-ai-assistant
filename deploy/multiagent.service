@@ -1,0 +1,13 @@
+[Unit]
+Description=Multiagent AI Assistant (gunicorn)
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/var/www/multiagent/backend
+EnvironmentFile=/var/www/multiagent/backend/.env
+ExecStart=/var/www/multiagent/venv/bin/gunicorn backend.wsgi:application --bind 127.0.0.1:8001 --workers 2 --timeout 300
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
