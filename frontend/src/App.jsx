@@ -5,7 +5,7 @@ import Login from './components/Login';
 import ChatInterface from './components/ChatInterface';
 
 // Configure axios base URL
-axios.defaults.baseURL = 'http://localhost:8000';
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || '';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
